@@ -29,8 +29,8 @@ def field_evolve_vacuum(E_0 : np.ndarray, B_0 : np.ndarray, dx, dt, step):
         raise ValueError('Initial E field does not satisfy periodic boundary condition!')
     
     grid_size = E_0.shape[0]
-    E_history = np.zeros((step, grid_size))
-    B_history = np.zeros((step, grid_size - 1))
+    E_history = np.zeros((step + 1, grid_size))
+    B_history = np.zeros((step + 1, grid_size - 1))
     E_history[0] = E_0.copy()
     B_history[0] = B_0.copy()
     for i in range(step):
