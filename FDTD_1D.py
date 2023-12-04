@@ -31,7 +31,7 @@ def field_evolve_vacuum(E_0 : np.ndarray, B_0 : np.ndarray, dx, dt, step):
         # update Electric field
         for j in range(1, grid_size):
             E_history[i+1][j] = E_history[i][j] - dt / dx * (B_history[i][j] - B_history[i][j-1])
-        E_history[i+1][0] = E_history[i][0] - dt / dx * (B_history[i][0] - B_history[i][grid_size - 2])
+        E_history[i+1][0] = E_history[i][0] - dt / dx * (B_history[i][0] - B_history[i][grid_size - 1])
         # update magnetic field
         for k in range(grid_size - 1):
             B_history[i+1][k] = B_history[i][k] - dt / dx * (E_history[i][k+1] - E_history[i][k])
