@@ -44,12 +44,10 @@ def field_evolve_vacuum(E: np.ndarray, B: np.ndarray, dx, dt):
 def advance_JE_medium(E : np.ndarray, B : np.ndarray, J: np.ndarray, Omega_p: np.ndarray,
                        nu: np.ndarray, dx, dt):
     n = E.shape[0]
-    J_old = J.copy()
-    J[0] += (Omega_p[0] ** 2 / 4 / np.pi * E[0] - nu[0] * J[0]) / dt
-    E[0] += dt / dx * (B[0] - B[n - 1]) - 4 * np.pi * J_old[0] / dt
-    for i in range(1, n):
-        J[i] += (Omega_p[i] ** 2/4/np.pi * E[i] - nu[i] * J[i]) / dt
-        E[i] += dt / dx * (B[i] - B[i - 1]) - 4 * np.pi * J_old[i] / dt
+    
+    for i in range(n):
+        E[i] += dt / dx *(B[i] - B[i - 1]) - J[i]
+        J[i] = ((1 - nu[i] * dt / 2) * J[i] + Omega_p[i] ** 2 * dt * E[i]) / (1 + nu[i] * dt / 2)
 
 def field_evolve_medium(E: np.ndarray, B: np.ndarray, J: np.ndarray, Omega_p: np.ndarray,
                         nu: np.ndarray, dx, dt):
