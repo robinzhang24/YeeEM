@@ -23,18 +23,14 @@ def field_evolve_vacuum(E: np.ndarray, B: np.ndarray, dx, dt):
 
     Inputs:
     - E : Initial electric field at integer coordinates, t=-dt/2. Assume
-      periodic boundary conditions
+      periodic boundary conditions.
     - B : Initial magnetic field at half-integer coordinates, t=0.
     - dx : Standard grid size of the fields.
     - dt : Time step of field evolution.
-    - step : Total number of time steps to be simulated. The system will generate
-      a set of E and B field at each timestep, though the exact time at which the
-      fields are calculated are different. The output arrays will have (step+1)
-      entries.
 
     Returns:
-    - E_history: Numpy array containing history of electric field evolution.
-    - B_history: Numpy array containing history of magnetic field evolution.
+    - E : Numpy array containing electric field at the next time step.
+    - B : Numpy array containing magnetic field at the next time step.
     """
 
     advance_E_field_vacuum(E, B, dx, dt)
@@ -51,6 +47,26 @@ def advance_JE_medium(E : np.ndarray, B : np.ndarray, J: np.ndarray, Omega_p: np
 
 def field_evolve_medium(E: np.ndarray, B: np.ndarray, J: np.ndarray, Omega_p: np.ndarray,
                         nu: np.ndarray, dx, dt):
+    """Compute evolution of electromagnetic field in medium in 1D using the
+    FDTD method. All quantities are assumed to be dimensionless.
+
+    Inputs:
+    - E : Initial electric field at integer coordinates, t=-dt/2. Assume
+      periodic boundary conditions.
+    - B : Initial magnetic field at half-integer coordinates, t=0.
+    - J : Initial current at integer coordinates, t=0.
+    - Omega_p : Numpy array specifying plasma frequency over the 1D grid.
+    - nu : Numpy array specifying collisional constant over the 1D grid.
+      Will work properly only if taken nonzero value at exactly the same
+      grid points as Omega_p.
+    - dx : Standard grid size of the fields.
+    - dt : Time step of field evolution.
+
+    Returns:
+    - E : Numpy array containing electric field at the next time step.
+    - B : Numpy array containing magnetic field at the next time step.
+    - J : Numpy array containing current at the next time step.
+    """
 
     advance_JE_medium(E, B, J, Omega_p, nu, dx, dt)
     advance_B_field_vacuum(E, B, dx, dt)
